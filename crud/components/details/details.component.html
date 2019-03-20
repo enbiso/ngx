@@ -1,0 +1,23 @@
+<form class="details p-16" fxLayout="column">
+    <ng-container *ngFor="let prop of properties | keys" [ngSwitch]="prop.value.type">
+        <mat-form-field fxFlex *ngSwitchCase="'array'">
+            <ebs-core-multi-input readonly [placeholder]="getDisplayText(prop.key)" [value]="data && data[prop.key]">
+            </ebs-core-multi-input>
+        </mat-form-field>
+        <ng-container *ngSwitchCase="'object'">
+            <div *ngIf="propAvailble(prop.value); else elseTemplate" class="object-detail">
+                <label class="secondary-text">{{getDisplayText(prop.key)}}</label>
+                <ebs-crud-details [data]="data && data[prop.key]" [model]="prop.value"></ebs-crud-details>
+            </div>
+            <ng-template #elseTemplate>
+                <mat-form-field fxFlex>
+                    <ebs-core-object-input readonly [placeholder]="getDisplayText(prop.key)"
+                        [value]="data && data[prop.key]"></ebs-core-object-input>
+                </mat-form-field>
+            </ng-template>
+        </ng-container>
+        <mat-form-field fxFlex *ngSwitchDefault>
+            <input matInput readonly [placeholder]="getDisplayText(prop.key)" [value]="data && data[prop.key] || '...'">
+        </mat-form-field>
+    </ng-container>
+</form>

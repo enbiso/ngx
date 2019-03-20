@@ -1,0 +1,11 @@
+.wrapper-loader {
+    max-width: 500px;
+    margin: auto;
+    .loader {
+        text-align: center;
+        mat-progress-bar {
+            width: 300px;  
+            height: 20px;          
+        }
+    }
+}

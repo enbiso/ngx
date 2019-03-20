@@ -1,0 +1,10 @@
+<div class="wrapper-loader">
+    <div class="loader" *ngIf="!error">  
+        <span class="mat-body-1">Please wait. We are</span>&nbsp;<span class="mat-body-2">Authenticating!</span>        
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </div>
+    <div *ngIf="error">
+        <h3 class="message-box error">Woops.. something went wrong !</h3>
+        <code>{{error}}</code>
+    </div>
+</div>

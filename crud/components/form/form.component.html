@@ -1,0 +1,22 @@
+<div>        
+    <form class="details p-16" fxLayout="column" [formGroup]="form" (ngSubmit)="onSubmit()">            
+        <ng-container *ngFor="let prop of (form.controls | keys)" [ngSwitch]="getFieldType(prop.key)">            
+            <mat-checkbox *ngSwitchCase="'boolean'" class="checkbox" [formControlName]="prop.key">{{getDisplayText(prop.key)}}</mat-checkbox>
+            <mat-form-field fxFlex *ngSwitchCase="'array'">
+                <ebs-core-multi-input [placeholder]="getDisplayText(prop.key)" [formControlName]="prop.key"></ebs-core-multi-input>
+            </mat-form-field>
+            <mat-form-field fxFlex *ngSwitchCase="'object'">
+                <ebs-core-object-input [placeholder]="getDisplayText(prop.key)" [formControlName]="prop.key"></ebs-core-object-input>
+            </mat-form-field>
+            <mat-form-field fxFlex *ngSwitchCase="'select'">
+                <mat-select [placeholder]="getDisplayText(prop.key)" [formControlName]="prop.key">
+                    <mat-option *ngFor="let item of getSelect(prop.key)" [value]="item.value">{{item.display}}</mat-option>
+                </mat-select>                
+            </mat-form-field>
+            <mat-form-field fxFlex *ngSwitchDefault>
+                <input matInput [readonly]="isReadOnly(prop.key)" [placeholder]="getDisplayText(prop.key)" [formControlName]="prop.key"> 
+            </mat-form-field>
+        </ng-container>
+        <button mat-flat-button color="accent">Submit</button>
+    </form>
+</div>
