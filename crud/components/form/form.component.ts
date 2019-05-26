@@ -12,7 +12,7 @@ import { Select } from './form.models';
 export class FormComponent implements OnChanges {
 
     @Input() model: ResourceModel
-    @Input() data: any    
+    @Input() data: any
     @Input() selects: { [prop: string]: Select[] } = {}
     @Output() formSubmit = new EventEmitter<any>()
 
@@ -25,13 +25,13 @@ export class FormComponent implements OnChanges {
 
     ngOnChanges(_: SimpleChanges): void {
         this.form = new FormGroup({})
-        for (let key in this.model && this.model.properties) {            
+        for (let key in this.model && this.model.properties) {
             let data = this.data && this.data[key]
             this.form.addControl(key, new FormControl(data))
         }
     }
 
-    isObject = (val: any): boolean => val != null && typeof val == 'object'    
+    isObject = (val: any): boolean => val != null && typeof val == 'object'
 
     isReadOnly(propKey: string): boolean {
         let prop = this.getProp(propKey)
@@ -60,6 +60,8 @@ export class FormComponent implements OnChanges {
     }
 
     onSubmit = () => {
-        this.formSubmit.emit(this.form.value)
+        if (this.form.valid) {
+            this.formSubmit.emit(this.form.value)
+        }
     }
 }
