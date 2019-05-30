@@ -34,9 +34,18 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     create(command: TCreateCommand, path?: string): Observable<TCreateResponse> {
-        return this.http.post<TCreateResponse>(this._path(path), command, {
+        return this._post(command, path, {
             'x-requestid': uuid()
         });
+    }
+
+    /**
+     * Post
+     * @param command 
+     * @param path 
+     */
+    _post(command: TCreateCommand, path?: string, headers?: any) {
+        return this.http.post<TCreateResponse>(this._path(path), command, headers);
     }
 
     /**
