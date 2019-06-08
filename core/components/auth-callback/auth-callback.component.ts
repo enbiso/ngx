@@ -24,7 +24,7 @@ export class AuthCallbackComponent implements OnInit {
             this.router.navigateByUrl("/")
         }, (err: Error) => {
             this.error = err.message
-            if (this.error.startsWith("iat is in the future:")) {
+            if (this.error.startsWith("iat is in the future:") || this.error.startsWith("exp is in the past:")) {
                 this.tokenTime = parseInt(this.error.split(":")[1]) * 1000
                 this.nowTime = Date.now()
             }

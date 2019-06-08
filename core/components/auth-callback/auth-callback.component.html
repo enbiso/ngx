@@ -10,8 +10,8 @@
     <div *ngIf="tokenTime">
         <h3 class="message-box error">Woops.. Your computer's time is incorrect.</h3>
         <p>
-            Our system indicates the time should be <strong>{{tokenTime | date:'shortTime'}}</strong>.
-            But it seems like your time is incorrectly set to <strong>{{nowTime | date:'shortTime'}}</strong>.
+            Our system indicates the time should be <strong>{{tokenTime | date:'short'}}</strong>.
+            But it seems like your time is incorrectly set to <strong>{{nowTime | date:'short'}}</strong>.
         </p>
         <p>
             Please sync your time with a time server.
