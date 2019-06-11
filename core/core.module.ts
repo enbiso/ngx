@@ -26,7 +26,7 @@ const routes = [
         Mat.MatProgressSpinnerModule,
         Mat.MatProgressBarModule,
         Mat.MatChipsModule,
-        Mat.MatFormFieldModule,        
+        Mat.MatFormFieldModule,
         Mat.MatButtonModule,
         FlexLayoutModule,
         FormsModule,
@@ -39,13 +39,15 @@ const routes = [
         StartCasePipe,
         cmp.CardPageComponent,
         cmp.MultiInputComponent,
-        cmp.ObjectInputComponent,        
+        cmp.ObjectInputComponent,
+        cmp.SpinnerComponent
     ],
     declarations: [
         cmp.AuthCallbackComponent,
         cmp.CardPageComponent,
         cmp.MultiInputComponent,
-        cmp.ObjectInputComponent,        
+        cmp.ObjectInputComponent,
+        cmp.SpinnerComponent,
         KeysPipe,
         StartCasePipe
     ],

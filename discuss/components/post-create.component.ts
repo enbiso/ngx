@@ -10,7 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
         <mat-form-field fxFlex>
             <textarea matInput rows="5" formControlName="content" placeholder="Content"></textarea>
         </mat-form-field>
-        <button mat-flat-button color="accent">{{post.id && 'Update' || 'Post'}}</button>
+        <button mat-flat-button [disabled]="form.disabled" color="accent">{{post.id && 'Update' || 'Post'}}</button>
     </form>    
 `
 })
@@ -40,15 +40,17 @@ export class PostCreateComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.form.valid) {
-            if (this.post.id)
-                this.api.updatePost(this.discuss, this.post.id, this.form.value).subscribe(_ => {
-                    this.dlg.getDialogById(this.id).close()
-                })
-            else
-                this.api.addPost(this.discuss, this.form.value).subscribe(_ => {
-                    this.dlg.getDialogById(this.id).close()
-                })
-        }
+        if (!this.form.valid || this.form.disabled) return
+        this.form.disable()
+
+        if (this.post.id)
+            this.api.updatePost(this.discuss, this.post.id, this.form.value).subscribe(_ => {
+                this.dlg.getDialogById(this.id).close()
+            })
+        else
+            this.api.addPost(this.discuss, this.form.value).subscribe(_ => {
+                this.dlg.getDialogById(this.id).close()
+            })
+
     }
 }

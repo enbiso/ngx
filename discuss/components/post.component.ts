@@ -8,7 +8,7 @@ import { style } from '@angular/animations';
 <mat-card class="m-8">
     <mat-card-title-group fxLayout="column">
         <mat-card-title fxFlex class="postedBy">{{post.postedByName || "..."}}</mat-card-title>
-        <mat-card-subtitle fxFlex class="created">{{post.created | date}}</mat-card-subtitle>
+        <mat-card-subtitle fxFlex class="created">{{post.created | date:'MMM d, y - h:mm a'}}</mat-card-subtitle>
     </mat-card-title-group>
     <mat-card-content>
         <p>{{post.content}}</p>
