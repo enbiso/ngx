@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'ebs-core-card-page',
-    template: 
-    `
+    template:
+        `
     <div class="page-layout carded fullwidth inner-scroll">
-        <div class="top-bg mat-accent-bg"></div>
+        <div class="top-bg accent"></div>
         <div class="center">
-            <div class="header mat-accent-bg" 
+            <div class="header accent" 
                 fxLayout="column" fxLayoutAlign="center center" 
                 fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
 
