@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid"
 
 export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
     TQueryModel = any, TSummeryQueryModel = any,
-    TCreateCommand = any, TUpdateCommand = any, 
+    TCreateCommand = any, TUpdateCommand = any,
     TCreateResponse = any, TUpdateResponse = any, TDeleteResponse = any> {
 
     constructor(protected resourceUri: string, protected http: HttpService) { }
@@ -34,9 +34,18 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     create(command: TCreateCommand, path?: string): Observable<TCreateResponse> {
-        return this.http.post<TCreateResponse>(this._path(path), command, {
+        return this._post(command, path, {
             'x-requestid': uuid()
         });
+    }
+
+    /**
+     * Post
+     * @param command 
+     * @param path 
+     */
+    _post(command: TCreateCommand, path?: string, headers?: any) {
+        return this.http.post<TCreateResponse>(this._path(path), command, headers);
     }
 
     /**
