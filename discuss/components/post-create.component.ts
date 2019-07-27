@@ -10,6 +10,24 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
         <mat-form-field fxFlex>
             <textarea matInput rows="5" formControlName="content" placeholder="Content"></textarea>
         </mat-form-field>
+        <div formGroupName="attachment" fxFlex fxLayout="column">
+            <mat-form-field fxFlex>
+                <mat-select formControlName="type" placeholder="Attachment Type">
+                    <mat-option [value]="null">None</mat-option>  
+                    <mat-option value="file">File</mat-option>
+                    <mat-option value="link">Link</mat-option>
+                    <mat-option value="image">Image</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex *ngIf="form.value.attachment.type == 'link'">
+                <input matInput formControlName="uri" placeholder="Link Url"/>
+            </mat-form-field>
+            <div fxFlex *ngIf="form.value.attachment.type && form.value.attachment.type != 'link'">
+                <button type="button" mat-flat-button (click)="fileInput.click()">{{fileToUpload && fileToUpload.name || 'Choose File'}}</button>
+                <input hidden (change)="handleFileInput($event.target.files)" #fileInput type="file">
+                <br/><br/>
+            </div>
+        </div>
         <button mat-flat-button [disabled]="form.disabled" color="accent">{{post.id && 'Update' || 'Post'}}</button>
     </form>    
 `
@@ -21,6 +39,7 @@ export class PostCreateComponent implements OnInit {
     post: DiscussPostQueryModel = <DiscussPostQueryModel>{}
     discuss: string
     id: string
+    fileToUpload: File
 
     constructor(
         private api: DiscussService,
@@ -36,7 +55,16 @@ export class PostCreateComponent implements OnInit {
     ngOnInit() {
         this.form = this.fb.group({
             content: [this.post.content, [Validators.required]],
+            attachment: this.fb.group({
+                type: [this.post.attachment && this.post.attachment.type],
+                uri: [this.post.attachment && this.post.attachment.uri]
+            })
         })
+    }
+
+    handleFileInput(files: FileList) {
+        this.fileToUpload = files.item(0)
+        console.log(this.fileToUpload)
     }
 
     onSubmit() {
@@ -51,6 +79,5 @@ export class PostCreateComponent implements OnInit {
             this.api.addPost(this.discuss, this.form.value).subscribe(_ => {
                 this.dlg.getDialogById(this.id).close()
             })
-
     }
 }
