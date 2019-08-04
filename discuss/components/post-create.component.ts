@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DiscussPostQueryModel, DiscussService } from '../services/discuss.service';
+import { DiscussPostQueryModel, DiscussService, DiscussPostCreate } from '../services/discuss.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { of, Observable } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 
 @Component({
     selector: 'ebs-discuss-post-create',
@@ -41,6 +43,10 @@ export class PostCreateComponent implements OnInit {
     id: string
     fileToUpload: File
 
+    FILE_ATTACHMENT_TYPES: string[] = ["file", "image"]
+
+    fileUploadHandler: FileUploadHandler
+
     constructor(
         private api: DiscussService,
         private dlg: MatDialog,
@@ -50,6 +56,7 @@ export class PostCreateComponent implements OnInit {
         this.post = data && data.post || this.post
         this.discuss = data && data.discuss
         this.id = data && data.id
+        this.fileUploadHandler = data && data.fileUpload
     }
 
     ngOnInit() {
@@ -64,20 +71,30 @@ export class PostCreateComponent implements OnInit {
 
     handleFileInput(files: FileList) {
         this.fileToUpload = files.item(0)
-        console.log(this.fileToUpload)
     }
 
     onSubmit() {
         if (!this.form.valid || this.form.disabled) return
         this.form.disable()
 
-        if (this.post.id)
-            this.api.updatePost(this.discuss, this.post.id, this.form.value).subscribe(_ => {
-                this.dlg.getDialogById(this.id).close()
-            })
-        else
-            this.api.addPost(this.discuss, this.form.value).subscribe(_ => {
-                this.dlg.getDialogById(this.id).close()
-            })
+        of(<DiscussPostCreate>this.form.value).pipe(mergeMap(post => {
+            if (post.attachment && this.FILE_ATTACHMENT_TYPES.indexOf(post.attachment.type) >= 0 && this.fileUploadHandler)
+                return this.fileUploadHandler(this.fileToUpload).pipe(map(uploadUrl => {
+                    post.attachment.uri = uploadUrl
+                    post.attachment.name = this.fileToUpload.name
+                    return post
+                }))
+            else
+                return of(post)
+        })).pipe(mergeMap(post => {
+            if (this.post.id)
+                return this.api.updatePost(this.discuss, this.post.id, post)
+            else
+                return this.api.addPost(this.discuss, post)
+        })).subscribe(_ => {
+            this.dlg.getDialogById(this.id).close()
+        })
     }
 }
+
+export type FileUploadHandler = (file: File) => Observable<string>

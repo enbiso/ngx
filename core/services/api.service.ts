@@ -16,7 +16,7 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     get(id: TKey, path?: string): Observable<TQueryModel> {
-        return this.http.get<TQueryModel>(this._path(path, id));
+        return this.http.get<TQueryModel>(this._resolvePath(path, id));
     }
 
     /**
@@ -25,7 +25,7 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     list(search?: TSearch, path?: string): Observable<TSummeryQueryModel[]> {
-        return this.http.get<TSummeryQueryModel[]>(this._path(path), search);
+        return this.http.get<TSummeryQueryModel[]>(this._resolvePath(path), search);
     }
 
     /**
@@ -34,18 +34,19 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     create(command: TCreateCommand, path?: string): Observable<TCreateResponse> {
-        return this._post(command, path, {
+        return this._post(this._resolvePath(path), command, {
             'x-requestid': uuid()
         });
     }
 
     /**
      * Post
-     * @param command 
-     * @param path 
+     * @param url Full URL
+     * @param command Body command
+     * @param headers headers
      */
-    _post(command: TCreateCommand, path?: string, headers?: any) {
-        return this.http.post<TCreateResponse>(this._path(path), command, headers);
+    _post<T>(url: string, command: any, headers?: any): Observable<T> {
+        return this.http.post<T>(url, command, headers);
     }
 
     /**
@@ -55,9 +56,19 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     update(id: TKey, command: TUpdateCommand, path?: string): Observable<TUpdateResponse> {
-        return this.http.put<TUpdateResponse>(this._path(path, id), command, {
+        return this._put(this._resolvePath(path, id), command, {
             'x-requestid': uuid()
         });
+    }
+
+    /**
+     * Put
+     * @param url Full URL
+     * @param command Body command
+     * @param headers headers
+     */
+    _put<T>(url: string, command: any, headers?: any): Observable<T> {
+        return this.http.put<T>(url, command, headers);
     }
 
     /**
@@ -66,10 +77,10 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     delete(id: TKey, path?: string): Observable<TDeleteResponse> {
-        return this.http.delete<TDeleteResponse>(this._path(path, id), {
+        return this.http.delete<TDeleteResponse>(this._resolvePath(path, id), {
             'x-requestid': uuid()
         });
     }
 
-    private _path = (path?: string, id?: TKey) => this.resourceUri + (path && `/${path}` || '') + (id && `/${id}` || '')
+    public _resolvePath = (path?: string, id?: TKey) => this.resourceUri + (path && `/${path}` || '') + (id && `/${id}` || '')
 }

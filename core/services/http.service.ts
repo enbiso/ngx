@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Observable, from as fromPromise } from 'rxjs';
-import { map, merge, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 /**

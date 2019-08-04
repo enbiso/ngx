@@ -47,6 +47,7 @@ export class DiscussPostQueryModel {
     attachment: {
         uri: string
         type: string
+        name: string
     }
     created: Date
     updated: Date
@@ -58,5 +59,6 @@ export class DiscussPostCreate {
     attachment: {
         uri: string
         type: string
+        name: string
     }
 }
