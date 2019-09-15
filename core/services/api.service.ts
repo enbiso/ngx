@@ -77,9 +77,18 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     delete(id: TKey, path?: string): Observable<TDeleteResponse> {
-        return this.http.delete<TDeleteResponse>(this._resolvePath(path, id), {
+        return this._delete<TDeleteResponse>(this._resolvePath(path, id), {
             'x-requestid': uuid()
         });
+    }
+
+    /**
+     * Delete Resource
+     * @param url Full URL
+     * @param headers headers
+     */
+    _delete<T>(url: string, headers?: any): Observable<T> {
+        return this.http.delete<T>(url, headers);
     }
 
     public _resolvePath = (path?: string, id?: TKey) => this.resourceUri + (path && `/${path}` || '') + (id && `/${id}` || '')
