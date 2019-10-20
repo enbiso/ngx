@@ -14,7 +14,7 @@ export class DiscussService extends ApiService<string> {
         super(ResourceUri("discuss", "threads"), httpService);
     }
 
-    listPosts(id: string): Observable<DiscussPostQueryModel[]> {
+    listPosts(id: string): Observable<DiscussPostListQueryModel> {
         return super.get(`${id}/posts`)
     }
 
@@ -52,6 +52,10 @@ export class DiscussPostQueryModel {
     created: Date
     updated: Date
     postedBy: string
+}
+
+export interface DiscussPostListQueryModel {
+    records: DiscussPostQueryModel[]
 }
 
 export class DiscussPostCreate {

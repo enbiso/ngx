@@ -77,7 +77,11 @@ export class PostCreateComponent implements OnInit {
         if (!this.form.valid || this.form.disabled) return
         this.form.disable()
 
-        of(<DiscussPostCreate>this.form.value).pipe(mergeMap(post => {
+        let req = <DiscussPostCreate>this.form.value
+        if (req.attachment.type == null)
+            req.attachment = null
+
+        of(req).pipe(mergeMap(post => {
             if (post.attachment && this.FILE_ATTACHMENT_TYPES.indexOf(post.attachment.type) >= 0 && this.fileUploadHandler)
                 return this.fileUploadHandler(this.fileToUpload).pipe(map(uploadUrl => {
                     post.attachment.uri = uploadUrl
