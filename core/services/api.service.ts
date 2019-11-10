@@ -4,7 +4,7 @@ import { HttpParams } from "@angular/common/http"
 import { v4 as uuid } from "uuid"
 
 export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
-    TQueryModel = any, TSummeryQueryModel = any,
+    TGetResponse = any, TListReponse = any,
     TCreateCommand = any, TUpdateCommand = any,
     TCreateResponse = any, TUpdateResponse = any, TDeleteResponse = any> {
 
@@ -15,8 +15,8 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param id Resource Id
      * @param path Path URL postfix
      */
-    get(id: TKey, path?: string): Observable<TQueryModel> {
-        return this.http.get<TQueryModel>(this._resolvePath(path, id));
+    get(id: TKey, path?: string): Observable<TGetResponse> {
+        return this.http.get<TGetResponse>(this._resolvePath(path, id));
     }
 
     /**
@@ -24,8 +24,8 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param search Search model
      * @param path Path URL postfix
      */
-    list(search?: TSearch, path?: string): Observable<TSummeryQueryModel[]> {
-        return this.http.get<TSummeryQueryModel[]>(this._resolvePath(path), search);
+    list(search?: TSearch, path?: string): Observable<TListReponse> {
+        return this.http.get<TListReponse>(this._resolvePath(path), search);
     }
 
     /**
