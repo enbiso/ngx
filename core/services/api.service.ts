@@ -16,7 +16,7 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     get(id: TKey, path?: string): Observable<TGetResponse> {
-        return this.http.get<TGetResponse>(this._resolvePath(path, id));
+        return this._get<TGetResponse>(this._resolvePath(path, id));
     }
 
     /**
@@ -25,7 +25,17 @@ export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
      * @param path Path URL postfix
      */
     list(search?: TSearch, path?: string): Observable<TListReponse> {
-        return this.http.get<TListReponse>(this._resolvePath(path), search);
+        return this._get<TListReponse>(this._resolvePath(path), search);
+    }
+
+    /**
+     * Get
+     * @param url full URL
+     * @param params query params as object
+     * @param headers headers
+     */
+    _get<T>(url: string, params?: any, headers?: any): Observable<T> {
+        return this.http.get<T>(url, new HttpParams({ fromObject: params }), headers);
     }
 
     /**
