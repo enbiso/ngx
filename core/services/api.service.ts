@@ -3,7 +3,7 @@ import { HttpService } from "./http.service"
 import { HttpParams } from "@angular/common/http"
 import { v4 as uuid } from "uuid"
 
-export abstract class ApiService<TKey = any, TSearch extends HttpParams = any,
+export abstract class ApiService<TKey = any, TSearch = any,
     TGetResponse = any, TListReponse = any,
     TCreateCommand = any, TUpdateCommand = any,
     TCreateResponse = any, TUpdateResponse = any, TDeleteResponse = any> {

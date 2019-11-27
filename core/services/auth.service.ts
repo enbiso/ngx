@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
  */
 @Injectable()
 export class AuthService {
-    
+
     private settings: UserManagerSettings = Object.assign(environment.oidc, {
         redirect_uri: AbsoluteUri('auth-callback'),
         post_logout_redirect_uri: BaseUri(),
@@ -19,30 +19,29 @@ export class AuthService {
         loadUserInfo: true
     });
 
-    private authChangeSource = new Subject<AuthChangeEvent>();
-    public authChange$ = this.authChangeSource.asObservable();
+    public onAuthChange = new Subject<AuthChangeEvent>();
 
-    private manager = new UserManager(this.settings);    
+    private manager = new UserManager(this.settings);
 
     /**
      * Gets the current user profile
      */
-    profile(): Promise<UserProfile> {        
+    profile(): Promise<UserProfile> {
         return this.manager.getUser().then(user => user && user.profile || null);
     }
 
     /**
      * Check if the user is logged in
      */
-    loggedIn(): Promise<boolean> {        
-        return this.manager.getUser().then(user => user != null && !user.expired);        
+    loggedIn(): Promise<boolean> {
+        return this.manager.getUser().then(user => user != null && !user.expired);
     }
 
     /**
      * Gets authorization header
      */
     authHeader(): Promise<string> {
-        return this.manager.getUser().then(user => 
+        return this.manager.getUser().then(user =>
             `${user && user.token_type} ${user && user.access_token}`);
     }
 
@@ -58,7 +57,7 @@ export class AuthService {
      */
     completeSignIn(): Promise<User> {
         return this.manager.signinRedirectCallback().then(_ => {
-            this.authChangeSource.next(AuthChangeEvent.afterSignIn)
+            this.onAuthChange.next(AuthChangeEvent.afterSignIn)
             return _;
         });
     }
@@ -75,7 +74,7 @@ export class AuthService {
      */
     completeSignOut(): Promise<void> {
         return this.manager.signoutRedirectCallback().then(() => {
-            this.authChangeSource.next(AuthChangeEvent.afterSignOut)
+            this.onAuthChange.next(AuthChangeEvent.afterSignOut)
         });
     }
 }
