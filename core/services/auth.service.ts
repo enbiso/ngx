@@ -3,7 +3,7 @@ import { UserManager, UserManagerSettings, User } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile, AuthChangeEvent } from '../models';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 /**
  * Auth service
