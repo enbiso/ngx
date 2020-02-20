@@ -17,24 +17,36 @@ export class SwaggerService {
      * @param service Service Name
      * @param name Model Name
      */
-    getResourceModel(service: string, name: string) : Observable<ResourceModel> {
+    getResourceModel(service: string, name: string): Observable<ResourceModel> {
         return this.fetchSwagger(service).pipe(
             map(doc => {
-                let model = <ResourceModel>doc["definitions"][name]
-                for (const key in model.properties) {
-                    if (model.properties.hasOwnProperty(key) && model.properties[key].hasOwnProperty("$ref")) {
-                        let refName = (<string>model.properties[key]['$ref']).replace("#/definitions/", "")
-                        model.properties[key] = <ResourceModel>doc["definitions"][refName]
-                    }                    
+                if (doc["definitions"]) {
+                    let model = <ResourceModel>doc["definitions"][name]
+                    for (const key in model.properties) {
+                        if (model.properties.hasOwnProperty(key) && model.properties[key].hasOwnProperty("$ref")) {
+                            let refName = (<string>model.properties[key]['$ref']).replace("#/definitions/", "")
+                            model.properties[key] = <ResourceModel>doc["definitions"][refName]
+                        }
+                    }
+                    return model
+                } else if (doc["components"]) {
+                    const schemas = doc["components"]["schemas"]
+                    let model = <ResourceModel>schemas[name]
+                    for (const key in model.properties) {
+                        if (model.properties.hasOwnProperty(key) && model.properties[key].hasOwnProperty("$ref")) {
+                            let refName = (<string>model.properties[key]['$ref']).replace("#/components/schemas/", "")
+                            model.properties[key] = <ResourceModel>schemas[refName]
+                        }
+                    }
+                    return model
                 }
-                return model;
             })
         ).pipe(share());
     }
 
     private fetchSwagger(service: string): Observable<any> {
         let key = "swagger-" + service;
-        if(this.cacheService.has(key)){
+        if (this.cacheService.has(key)) {
             return this.cacheService.getAsync(key);
         } else {
             var swagger$ = this.httpClient.get(ServiceUri(service) + "swagger.json");
