@@ -14,18 +14,18 @@ export class DiscussService extends ApiService<string> {
         super(ResourceUri("discuss", "threads"), httpService);
     }
 
-    listPosts(id: string): Observable<DiscussPostQueryModel[]> {
+    listPosts(id: string): Observable<DiscussPostListQueryModel> {
         return super.get(`${id}/posts`)
     }
 
-    addPost(id: string, value: any) {
+    addPost(id: string, value: DiscussPostCreate) {
         return super.create(value, `${id}/posts`).pipe(map(p => {
             this.postChangeSource.next(p)
             return p
         }))
     }
 
-    updatePost(id: string, postId: string, value: any) {
+    updatePost(id: string, postId: string, value: DiscussPostCreate) {
         return super.update(postId, value, `${id}/posts`).pipe(map(p => {
             this.postChangeSource.next(p)
             return p
@@ -44,7 +44,25 @@ export class DiscussService extends ApiService<string> {
 export class DiscussPostQueryModel {
     id: string
     content: string
+    attachment: {
+        uri: string
+        type: string
+        name: string
+    }
     created: Date
     updated: Date
     postedBy: string
+}
+
+export interface DiscussPostListQueryModel {
+    records: DiscussPostQueryModel[]
+}
+
+export class DiscussPostCreate {
+    content: string
+    attachment: {
+        uri: string
+        type: string
+        name: string
+    }
 }
