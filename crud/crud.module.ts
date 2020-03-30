@@ -4,7 +4,6 @@ import { FormComponent } from './components/form/form.component';
 import { DetailsComponent } from './components/details/details.component';
 import { CommonModule } from '@angular/common';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import * as Mat from '@angular/material';
 import { EbsCoreModule } from '@enbiso/core/core.module';
 import { RouterModule } from '@angular/router';
 import { SwaggerService } from './services';
@@ -23,37 +22,37 @@ import { HeaderComponent } from './components/header/header.component';
         ReactiveFormsModule,
         FlexLayoutModule,
         NgxDatatableModule,
-        Mat.MatCheckboxModule,
-        Mat.MatIconModule,
-        Mat.MatTooltipModule,
-        Mat.MatListModule,      
-        Mat.MatTableModule,
-        Mat.MatCardModule,
-        Mat.MatFormFieldModule,
-        Mat.MatInputModule,
-        Mat.MatPaginatorModule,
-        Mat.MatSelectModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatListModule,
+        MatTableModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatPaginatorModule,
+        MatSelectModule,
         EbsCoreModule,
         EbsCacheModule,
-        Mat.MatButtonModule,
-        Mat.MatChipsModule
+        MatButtonModule,
+        MatChipsModule
     ],
     exports: [
         ListComponent,
         FormComponent,
         DetailsComponent,
         HeaderComponent,
-        PopulateKeyPipe        
+        PopulateKeyPipe
     ],
     declarations: [
         ListComponent,
         FormComponent,
         DetailsComponent,
         HeaderComponent,
-        PopulateKeyPipe        
+        PopulateKeyPipe
     ],
     providers: [
-        SwaggerService,        
+        SwaggerService,
         PopulateKeyPipe,
         StartCasePipe
     ],

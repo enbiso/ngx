@@ -4,12 +4,18 @@ import { AuthGuardService, AuthService, HttpService } from './services';
 import * as cmp from './components';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import * as Mat from '@angular/material';
 import { KeysPipe } from './pipes/keys.pipe';
 import { StartCasePipe } from './pipes/startcase.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes = [
     {
@@ -22,15 +28,15 @@ const routes = [
     imports: [
         CommonModule,
         HttpClientModule,
-        Mat.MatDialogModule,
-        Mat.MatProgressSpinnerModule,
-        Mat.MatProgressBarModule,
-        Mat.MatChipsModule,
-        Mat.MatFormFieldModule,
-        Mat.MatButtonModule,
+        MatDialogModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatChipsModule,
+        MatFormFieldModule,
+        MatButtonModule,
         FlexLayoutModule,
         FormsModule,
-        Mat.MatIconModule,
+        MatIconModule,
         AutosizeModule,
         RouterModule.forChild(routes)
     ],

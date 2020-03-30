@@ -1,5 +1,6 @@
 import { Component, Input, ElementRef, OnDestroy, Optional, Self, HostBinding } from '@angular/core';
-import { MatChipInputEvent, MatFormFieldControl } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';

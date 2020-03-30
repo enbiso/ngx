@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserManager, UserManagerSettings, User } from 'oidc-client';
+import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile, AuthChangeEvent } from '../models';
@@ -26,7 +26,7 @@ export class AuthService {
     /**
      * Gets the current user profile
      */
-    profile(): Promise<UserProfile> {
+    profile(): Promise<Profile | UserProfile> {
         return this.manager.getUser().then(user => user && user.profile || null);
     }
 
