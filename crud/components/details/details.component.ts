@@ -4,7 +4,7 @@ import { StartCasePipe } from '@enbiso/core/pipes/startcase.pipe';
 
 @Component({
     selector: 'ebs-crud-details',
-    templateUrl: './details.component.html'    
+    templateUrl: './details.component.html'
 })
 export class DetailsComponent implements OnChanges {
 
@@ -32,7 +32,7 @@ export class DetailsComponent implements OnChanges {
     }
 
     propAvailble(m: ResourceModel): boolean {
-        let ln = Object.keys(m && m.properties).length
+        let ln = Object.keys(m && m.properties || []).length
         return ln > 0
     }
 }
