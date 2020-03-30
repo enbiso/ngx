@@ -76,8 +76,8 @@ export class HttpService {
         return fromPromise(this.authService.authHeader())
             .pipe(map(token => {
                 opts.headers = opts.headers || {}
-                opts.headers["Accept"] = "application/json"
-                opts.headers["Content-Type"] = "application/json"
+                opts.headers["Accept"] = opts.headers["Accept"] || "application/json"
+                opts.headers["Content-Type"] = opts.headers["Content-Type"] || "application/json"
                 opts.headers["Authorization"] = token
                 return opts
             }))
