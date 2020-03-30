@@ -19,8 +19,8 @@ export class HttpService {
      * @param resource Resource URI
      * @param data POST data
      */
-    public post<M>(resource: string, data: any, headers?: { [name: string]: string }): Observable<M> {
-        return this._options(headers).pipe(mergeMap(opts => {
+    public post<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
+        return this._options(opts).pipe(mergeMap(opts => {
             return this.http.post<M>(resource, data, opts);
         }));
     }
@@ -30,8 +30,8 @@ export class HttpService {
      * @param resource Resource URI
      * @param data PUT data
      */
-    public put<M>(resource: string, data: any, headers?: { [name: string]: string }): Observable<M> {
-        return this._options(headers).pipe(mergeMap(opts => {
+    public put<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
+        return this._options(opts).pipe(mergeMap(opts => {
             return this.http.put<M>(resource, data, opts);
         }));
     }
@@ -40,8 +40,8 @@ export class HttpService {
      * PATCH request
      * @param resource Resource URI
      */
-    public patch<M>(resource: string, data: any, headers?: { [name: string]: string }): Observable<M> {
-        return this._options(headers).pipe(mergeMap(opts => {
+    public patch<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
+        return this._options(opts).pipe(mergeMap(opts => {
             return this.http.patch<M>(resource, data, opts);
         }));
     }
@@ -50,8 +50,8 @@ export class HttpService {
      * DELETE request
      * @param resource Resource URI
      */
-    public delete<M>(resource: string, headers?: { [name: string]: string }): Observable<M> {
-        return this._options(headers).pipe(mergeMap(opts => {
+    public delete<M>(resource: string, opts?: HttpOptions): Observable<M> {
+        return this._options(opts).pipe(mergeMap(opts => {
             return this.http.delete<M>(resource, opts);
         }));
     }
@@ -61,29 +61,38 @@ export class HttpService {
      * @param resource ResourceURI
      * @param params URL params
      */
-    public get<M>(resource: string, params?: HttpParams, headers?: { [name: string]: string }): Observable<M> {
-        return this._options(headers, params).pipe(mergeMap(opts => {
+    public get<M>(resource: string, opts?: HttpOptions): Observable<M> {
+        return this._options(opts).pipe(mergeMap(opts => {
             return this.http.get<M>(resource, opts);
         }))
     }
 
     /**
-     * Get options based on http parameters
-     * @param params HTTP parameters
+     * Get options based on setup opts
+     * @param opts setup opts
      */
-    private _options(headers?: { [name: string]: string }, params?: HttpParams): Observable<Object> {
-        return this._headers(headers).pipe(map(headers => new Object({ headers: headers, params: params })));
+    private _options(opts: HttpOptions): Observable<HttpOptions> {
+        opts = opts || {}
+        return fromPromise(this.authService.authHeader())
+            .pipe(map(token => {
+                opts.headers = opts.headers || {}
+                opts.headers["Accept"] = "application/json"
+                opts.headers["Content-Type"] = "application/json"
+                opts.headers["Authorization"] = token
+                return opts
+            }))
     }
+}
 
-    /**
-     * Get HTTP headers with auth token
-     */
-    private _headers(headers?: { [name: string]: string }): Observable<HttpHeaders> {
-        var token = fromPromise(this.authService.authHeader());
-        return token.pipe(map(token => new HttpHeaders(headers)
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-        ));
-    }
+export interface HttpOptions {
+    headers?: HttpHeaders | {
+        [header: string]: string | string[];
+    };
+    observe?: any;
+    params?: HttpParams | {
+        [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
 }

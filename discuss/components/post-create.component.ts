@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DiscussPostQueryModel, DiscussService, DiscussPostCreate } from '../services/discuss.service';
+import { DiscussPostResponse, DiscussService, DiscussPostCreate } from '../services/discuss.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { of, Observable } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
@@ -38,7 +38,7 @@ import { mergeMap, map } from 'rxjs/operators';
 export class PostCreateComponent implements OnInit {
     form: FormGroup
 
-    post: DiscussPostQueryModel = <DiscussPostQueryModel>{}
+    post: DiscussPostResponse = <DiscussPostResponse>{}
     discuss: string
     id: string
     fileToUpload: File

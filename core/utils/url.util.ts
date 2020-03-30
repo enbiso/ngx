@@ -19,7 +19,7 @@ export function AbsoluteUri(path: string) {
  */
 export function ResourceUri(serviceName, resourceName) {
     let service = ServiceUri(serviceName);
-    return service + resourceName;    
+    return `${service}${resourceName}/`;
 }
 /**
  * Get service URL
@@ -27,6 +27,6 @@ export function ResourceUri(serviceName, resourceName) {
  */
 export function ServiceUri(serviceName) {
     let service = environment.api.services[serviceName] as string;
-    if(!service) throw `Service ${serviceName} not defined in environment`;    
-    return (service.startsWith("http") ? service : environment.api.server + service); 
+    if (!service) throw `Service ${serviceName} not defined in environment`;
+    return (service.startsWith("http") ? service : environment.api.server + service);
 }

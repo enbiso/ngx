@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { DiscussPostQueryModel } from '../services/discuss.service';
+import { DiscussPostResponse } from '../services/discuss.service';
 
 @Component({
     selector: 'ebs-discuss-post',
@@ -47,6 +47,6 @@ export class PostComponent {
     }
 }
 
-export interface DiscussPostViewModel extends DiscussPostQueryModel {
+export interface DiscussPostViewModel extends DiscussPostResponse {
     postedByName: string
 }
