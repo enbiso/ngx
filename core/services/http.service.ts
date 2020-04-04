@@ -21,7 +21,7 @@ export class HttpService {
      */
     public post<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
         return this._options(opts).pipe(mergeMap(opts => {
-            return this.http.post<M>(resource, data, opts);
+            return this.http.post<M>(resource, data, opts)
         }));
     }
 
