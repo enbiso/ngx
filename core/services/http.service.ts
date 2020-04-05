@@ -1,18 +1,34 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { Observable, from as fromPromise } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Observable, from as fromPromise, throwError } from 'rxjs';
+import { map, mergeMap, catchError } from 'rxjs/operators';
+import { Injectable, Injector, InjectionToken } from '@angular/core';
+
+/**
+ * Core HTTP error handler
+ */
+export interface CoreHttpErrorHandler {
+    handle(err: HttpErrorResponse)
+}
+
+/**
+ * Core HTTP error handler token
+ */
+export const CORE_HTTP_ERROR_HANDLER = new InjectionToken<CoreHttpErrorHandler[]>('CORE_HTTP_ERROR_HANDLER')
 
 /**
  * HTTP service
  */
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class HttpService {
+    errorHandlers: CoreHttpErrorHandler[]
     constructor(
         private authService: AuthService,
-        private http: HttpClient
-    ) { }
+        private http: HttpClient,
+        injector: Injector
+    ) {
+        this.errorHandlers = injector.get(CORE_HTTP_ERROR_HANDLER, [])
+    }
 
     /**
      * POST request
@@ -20,9 +36,8 @@ export class HttpService {
      * @param data POST data
      */
     public post<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
-        return this._options(opts).pipe(mergeMap(opts => {
-            return this.http.post<M>(resource, data, opts)
-        }));
+        return this._options(opts).pipe(mergeMap(opts =>
+            this.http.post<M>(resource, data, opts).pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -31,9 +46,8 @@ export class HttpService {
      * @param data PUT data
      */
     public put<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
-        return this._options(opts).pipe(mergeMap(opts => {
-            return this.http.put<M>(resource, data, opts);
-        }));
+        return this._options(opts).pipe(mergeMap(opts =>
+            this.http.put<M>(resource, data, opts).pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -41,9 +55,8 @@ export class HttpService {
      * @param resource Resource URI
      */
     public patch<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
-        return this._options(opts).pipe(mergeMap(opts => {
-            return this.http.patch<M>(resource, data, opts);
-        }));
+        return this._options(opts).pipe(mergeMap(opts =>
+            this.http.patch<M>(resource, data, opts).pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -51,9 +64,8 @@ export class HttpService {
      * @param resource Resource URI
      */
     public delete<M>(resource: string, opts?: HttpOptions): Observable<M> {
-        return this._options(opts).pipe(mergeMap(opts => {
-            return this.http.delete<M>(resource, opts);
-        }));
+        return this._options(opts).pipe(mergeMap(opts =>
+            this.http.delete<M>(resource, opts).pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -62,9 +74,17 @@ export class HttpService {
      * @param params URL params
      */
     public get<M>(resource: string, opts?: HttpOptions): Observable<M> {
-        return this._options(opts).pipe(mergeMap(opts => {
-            return this.http.get<M>(resource, opts);
-        }))
+        return this._options(opts).pipe(mergeMap(opts =>
+            this.http.get<M>(resource, opts).pipe(catchError(err => this._errorHandler(err)))))
+    }
+
+    /**
+     * 
+     * @param err Http
+     */
+    _errorHandler(err: HttpErrorResponse): Observable<never> {
+        this.errorHandlers && this.errorHandlers.map(h => h.handle(err))
+        return throwError(err)
     }
 
     /**

@@ -3,12 +3,12 @@ import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile, AuthChangeEvent } from '../models';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 /**
  * Auth service
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
     private settings: UserManagerSettings = Object.assign(environment.oidc, {

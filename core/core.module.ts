@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule, InjectionToken } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthGuardService, AuthService, HttpService } from './services';
 import * as cmp from './components';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -16,6 +15,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthGuardService } from './services';
 
 const routes = [
     {
@@ -23,7 +23,6 @@ const routes = [
         component: cmp.AuthCallbackComponent
     }
 ];
-
 @NgModule({
     imports: [
         CommonModule,
@@ -58,9 +57,7 @@ const routes = [
         StartCasePipe
     ],
     providers: [
-        AuthGuardService,
-        AuthService,
-        HttpService
+        AuthGuardService
     ]
 })
 export class EbsCoreModule { }
