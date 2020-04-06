@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
-import { UserProfile, AuthChangeEvent } from '../models';
+import { UserProfile } from '../models';
 import { Subject, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
