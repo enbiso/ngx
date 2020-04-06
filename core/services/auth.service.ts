@@ -3,7 +3,8 @@ import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile, AuthChangeEvent } from '../models';
-import { Subject } from 'rxjs';
+import { Subject, from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * Auth service
@@ -19,62 +20,70 @@ export class AuthService {
         loadUserInfo: true
     });
 
-    public onAuthChange = new Subject<AuthChangeEvent>();
+    public onSignIn = new Subject<void>();
+    public onSignOut = new Subject<void>();
 
     private manager = new UserManager(this.settings);
+
+    constructor() {
+        from(this.loggedIn())
+            .pipe(map(loggedIn => loggedIn ? this.onSignIn.next() : this.onSignOut.next()))
+            .subscribe()
+    }
 
     /**
      * Gets the current user profile
      */
-    profile(): Promise<Profile | UserProfile> {
-        return this.manager.getUser().then(user => user && user.profile || null);
+    profile(): Observable<Profile | UserProfile> {
+        return from(this.manager.getUser()).pipe(map(user => user && user.profile || null))
     }
 
     /**
      * Check if the user is logged in
      */
-    loggedIn(): Promise<boolean> {
-        return this.manager.getUser().then(user => user != null && !user.expired);
+    loggedIn(): Observable<boolean> {
+        return from(this.manager.getUser())
+            .pipe(map(user => user != null && !user.expired))
     }
 
     /**
      * Gets authorization header
      */
-    authHeader(): Promise<string> {
-        return this.manager.getUser().then(user =>
-            `${user && user.token_type} ${user && user.access_token}`);
+    authHeader(): Observable<string> {
+        return from(this.manager.getUser())
+            .pipe(map(user => `${user && user.token_type} ${user && user.access_token}`))
     }
 
     /**
      * Start authentication
      */
-    startSignIn(): Promise<void> {
-        return this.manager.signinRedirect();
+    startSignIn(): Observable<void> {
+        return from(this.manager.signinRedirect())
     }
 
     /**
      * Complete authentication
      */
-    completeSignIn(): Promise<User> {
-        return this.manager.signinRedirectCallback().then(_ => {
-            this.onAuthChange.next(AuthChangeEvent.afterSignIn)
+    completeSignIn(): Observable<User> {
+        return from(this.manager.signinRedirectCallback()).pipe(map(_ => {
+            this.onSignIn.next()
             return _;
-        });
+        }))
     }
 
     /**
      * Start logout
      */
-    startSignOut(): Promise<void> {
-        return this.manager.signoutRedirect();
+    startSignOut(): Observable<void> {
+        return from(this.manager.signoutRedirect())
     }
 
     /**
      * Complete logout
      */
-    completeSignOut(): Promise<void> {
-        return this.manager.signoutRedirectCallback().then(() => {
-            this.onAuthChange.next(AuthChangeEvent.afterSignOut)
-        });
+    completeSignOut(): Observable<void> {
+        return from(this.manager.signoutRedirectCallback().then(() => {
+            this.onSignOut.next()
+        }))
     }
 }

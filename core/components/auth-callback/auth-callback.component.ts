@@ -20,7 +20,7 @@ export class AuthCallbackComponent implements OnInit {
 
     ngOnInit() {
         this.error = null
-        this.authService.completeSignIn().then(_ => {
+        this.authService.completeSignIn().subscribe(_ => {
             this.router.navigateByUrl("/")
         }, (err: Error) => {
             this.error = err.message
