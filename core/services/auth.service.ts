@@ -3,8 +3,8 @@ import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile } from '../models';
-import { Subject, from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subject, from, Observable, BehaviorSubject } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 
 /**
  * Auth service
@@ -20,8 +20,10 @@ export class AuthService {
         loadUserInfo: true
     });
 
-    public onSignIn = new Subject<void>();
-    public onSignOut = new Subject<void>();
+    public onSignIn = new Subject<void>()
+    public onSignOut = new Subject<void>()
+
+    public profileChange = new BehaviorSubject<Profile | UserProfile>(null)
 
     private manager = new UserManager(this.settings);
 
@@ -29,13 +31,11 @@ export class AuthService {
         from(this.loggedIn())
             .pipe(map(loggedIn => loggedIn ? this.onSignIn.next() : this.onSignOut.next()))
             .subscribe()
-    }
-
-    /**
-     * Gets the current user profile
-     */
-    profile(): Observable<Profile | UserProfile> {
-        return from(this.manager.getUser()).pipe(map(user => user && user.profile || null))
+        this.onSignIn
+            .pipe(mergeMap(() => from(this.manager.getUser())
+                .pipe(map(user => user && user.profile || null))
+                .pipe(map(profile => this.profileChange.next(profile)))))
+            .subscribe()
     }
 
     /**
