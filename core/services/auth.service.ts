@@ -47,6 +47,19 @@ export class AuthService {
     }
 
     /**
+     * Check if roll exists
+     */
+    inRole(role: string): Observable<boolean> {
+        return from(this.manager.getUser())
+            .pipe(map(user => {
+                const roles = user && user.profile && user.profile.role
+                return Array.isArray(roles)
+                    ? roles.indexOf(role) >= 0
+                    : roles == role
+            }))
+    }
+
+    /**
      * Gets authorization header
      */
     authHeader(): Observable<string> {
