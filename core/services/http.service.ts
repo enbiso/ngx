@@ -37,7 +37,14 @@ export class HttpService {
      */
     public post<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
         return this._options(opts).pipe(mergeMap(opts =>
-            this.http.post<M>(resource, data, opts).pipe(catchError(err => this._errorHandler(err)))))
+            this.http.post<M>(resource, data, opts)
+                .pipe(catchError((err: HttpErrorResponse) => {
+                    if (err.status == 401) {
+                        console.log(err)
+                    }
+                    return throwError(err)
+                }))
+                .pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -47,7 +54,14 @@ export class HttpService {
      */
     public put<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
         return this._options(opts).pipe(mergeMap(opts =>
-            this.http.put<M>(resource, data, opts).pipe(catchError(err => this._errorHandler(err)))))
+            this.http.put<M>(resource, data, opts)
+                .pipe(catchError((err: HttpErrorResponse) => {
+                    if (err.status == 401) {
+                        console.log(err)
+                    }
+                    return throwError(err)
+                }))
+                .pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -56,7 +70,14 @@ export class HttpService {
      */
     public patch<M>(resource: string, data: any, opts?: HttpOptions): Observable<M> {
         return this._options(opts).pipe(mergeMap(opts =>
-            this.http.patch<M>(resource, data, opts).pipe(catchError(err => this._errorHandler(err)))))
+            this.http.patch<M>(resource, data, opts)
+                .pipe(catchError((err: HttpErrorResponse) => {
+                    if (err.status == 401) {
+                        console.log(err)
+                    }
+                    return throwError(err)
+                }))
+                .pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -65,7 +86,14 @@ export class HttpService {
      */
     public delete<M>(resource: string, opts?: HttpOptions): Observable<M> {
         return this._options(opts).pipe(mergeMap(opts =>
-            this.http.delete<M>(resource, opts).pipe(catchError(err => this._errorHandler(err)))))
+            this.http.delete<M>(resource, opts)
+                .pipe(catchError((err: HttpErrorResponse) => {
+                    if (err.status == 401) {
+                        console.log(err)
+                    }
+                    return throwError(err)
+                }))
+                .pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**
@@ -75,7 +103,14 @@ export class HttpService {
      */
     public get<M>(resource: string, opts?: HttpOptions): Observable<M> {
         return this._options(opts).pipe(mergeMap(opts =>
-            this.http.get<M>(resource, opts).pipe(catchError(err => this._errorHandler(err)))))
+            this.http.get<M>(resource, opts)
+                .pipe(catchError((err: HttpErrorResponse) => {
+                    if (err.status == 401) {
+                        console.log(err)
+                    }
+                    return throwError(err)
+                }))
+                .pipe(catchError(err => this._errorHandler(err)))))
     }
 
     /**

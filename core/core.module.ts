@@ -22,6 +22,10 @@ const routes = [
     {
         path: 'auth-callback',
         component: cmp.AuthCallbackComponent
+    },
+    {
+        path: 'refresh-callback',
+        component: cmp.RefreshCallbackComponent
     }
 ];
 @NgModule({
@@ -53,6 +57,7 @@ const routes = [
     ],
     declarations: [
         cmp.AuthCallbackComponent,
+        cmp.RefreshCallbackComponent,
         cmp.CardPageComponent,
         cmp.MultiInputComponent,
         cmp.ObjectInputComponent,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
+import { UserManager, UserManagerSettings, User, Profile, WebStorageStateStore } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile } from '../models';
@@ -12,12 +12,15 @@ import { map, mergeMap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private settings: UserManagerSettings = Object.assign(environment.oidc, {
+    private settings: UserManagerSettings = Object.assign(environment.oidc, <UserManagerSettings>{
         redirect_uri: AbsoluteUri('auth-callback'),
         post_logout_redirect_uri: BaseUri(),
         response_type: 'id_token token',
         filterProtocolClaims: true,
-        loadUserInfo: true
+        loadUserInfo: true,
+        automaticSilentRenew: true,
+        silent_redirect_uri: AbsoluteUri('refresh-callback'),
+        userStore: new WebStorageStateStore({ store: localStorage })
     });
 
     public onSignIn = new Subject<void>()
