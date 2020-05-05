@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserManager, UserManagerSettings, User, Profile, WebStorageStateStore } from 'oidc-client';
+import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile } from '../models';
@@ -19,8 +19,7 @@ export class AuthService {
         filterProtocolClaims: true,
         loadUserInfo: true,
         automaticSilentRenew: true,
-        silent_redirect_uri: AbsoluteUri('refresh-callback'),
-        userStore: new WebStorageStateStore({ store: localStorage })
+        silent_redirect_uri: AbsoluteUri('refresh-callback')
     });
 
     public onSignIn = new Subject<void>()
@@ -86,6 +85,18 @@ export class AuthService {
             return _;
         }))
     }
+
+
+    /**
+     * Complete Refresh
+     */
+    completeRefresh(): Observable<User> {
+        return from(this.manager.signinSilentCallback()).pipe(map(_ => {
+            this.onSignIn.next()
+            return _;
+        }))
+    }
+
 
     /**
      * Start logout

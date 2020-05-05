@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserManager } from 'oidc-client';
+import { AuthService } from '@enbiso/core/services';
 
 @Component({
     selector: 'ebs-core-refresh-callback',
@@ -7,9 +7,12 @@ import { UserManager } from 'oidc-client';
 })
 
 export class RefreshCallbackComponent implements OnInit {
-    constructor(private userManager: UserManager) { }
+    constructor(private authService: AuthService) { }
 
     ngOnInit() {
-        this.userManager.signinSilentCallback().catch(err => console.log(err))
+        this.authService.completeRefresh().subscribe(_ => {
+        }, (err: Error) => {
+            console.log(err)
+        });
     }
 }

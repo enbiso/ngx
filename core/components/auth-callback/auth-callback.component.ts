@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services';
 import { Router } from '@angular/router';
-import { timestamp } from 'rxjs/operators';
 
 @Component({
     selector: 'ebs-core-auth-callback',
