@@ -64,9 +64,11 @@ const routes = [
         cmp.SpinnerComponent,
         cmp.RichEditorComponent,
         cmp.RichViewerComponent,
+        cmp.ConfirmDialogComponent,
         KeysPipe,
         StartCasePipe
     ],
+    entryComponents: [cmp.ConfirmDialogComponent],
     providers: [
         AuthGuardService
     ]
