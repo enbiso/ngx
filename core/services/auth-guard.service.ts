@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { AuthService } from './auth.service';
 import { mergeMap, map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
@@ -16,10 +16,10 @@ export class AuthGuardService implements CanActivate {
     /**
      * Can activate function which check the auth guard
      */
-    async canActivate(): Promise<boolean> {
+    canActivate(): Observable<boolean> {
         return this.authService.loggedIn().pipe(mergeMap(loggedIn => {
             if (loggedIn) return of(true)
             else this.authService.startSignIn().pipe(map(_ => false))
-        })).toPromise()
+        }))
     }
 }
