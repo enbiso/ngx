@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from './auth.service';
 import { Observable, from as fromPromise, throwError } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { Injectable, Injector, InjectionToken } from '@angular/core';
+import { AuthService } from '@enbiso/auth/services';
 
 /**
  * Core HTTP error handler

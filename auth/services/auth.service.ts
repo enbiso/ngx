@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
 import { environment } from 'environments/environment';
-import { AbsoluteUri, BaseUri } from '../utils';
 import { UserProfile } from '../models';
 import { Subject, from, Observable, BehaviorSubject } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { AbsoluteUri, BaseUri } from '@enbiso/core/utils';
 
 /**
  * Auth service
@@ -46,6 +46,13 @@ export class AuthService {
     loggedIn(): Observable<boolean> {
         return from(this.manager.getUser())
             .pipe(map(user => user != null && !user.expired))
+    }
+
+    /**
+     * Get User
+     */
+    getUser(): Observable<User> {
+        return from(this.manager.getUser())
     }
 
     /**

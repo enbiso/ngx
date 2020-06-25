@@ -1,0 +1,22 @@
+<div class="wrapper-loader">
+    <div class="loader" *ngIf="progress$ | async">
+        <span class="mat-body-1">Please wait. We are</span>&nbsp;<span class="mat-body-2">Authenticating!</span>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </div>
+    <ng-container *ngIf="error$ | async as error">
+        <div *ngIf="error">
+            <h3 class="message-box error">Woops.. something went wrong !</h3>
+            <code>{{error}}</code>
+        </div>
+        <div *ngIf="tokenTime$ | async as tokenTime">
+            <h3 class="message-box error">Woops.. Your computer's time is incorrect.</h3>
+            <p>
+                Our system indicates the time should be <strong>{{tokenTime | date:'short'}}</strong>.
+                But it seems like your time is incorrectly set to <strong>{{nowTime | date:'short'}}</strong>.
+            </p>
+            <p>
+                Please sync your time with a time server.
+            </p>
+        </div>
+    </ng-container>
+</div>

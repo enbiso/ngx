@@ -15,19 +15,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthGuardService } from './services';
 import { QuillModule } from 'ngx-quill';
 
-const routes = [
-    {
-        path: 'auth-callback',
-        component: cmp.AuthCallbackComponent
-    },
-    {
-        path: 'refresh-callback',
-        component: cmp.RefreshCallbackComponent
-    }
-];
 @NgModule({
     imports: [
         CommonModule,
@@ -42,7 +31,6 @@ const routes = [
         FormsModule,
         MatIconModule,
         AutosizeModule,
-        RouterModule.forChild(routes),
         QuillModule.forRoot()
     ],
     exports: [
@@ -56,8 +44,6 @@ const routes = [
         cmp.RichViewerComponent
     ],
     declarations: [
-        cmp.AuthCallbackComponent,
-        cmp.RefreshCallbackComponent,
         cmp.CardPageComponent,
         cmp.MultiInputComponent,
         cmp.ObjectInputComponent,
@@ -69,8 +55,5 @@ const routes = [
         StartCasePipe
     ],
     entryComponents: [cmp.ConfirmDialogComponent],
-    providers: [
-        AuthGuardService
-    ]
 })
 export class EbsCoreModule { }
