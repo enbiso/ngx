@@ -3,6 +3,8 @@ import { Observable, from as fromPromise, throwError } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { Injectable, Injector, InjectionToken } from '@angular/core';
 import { AuthService } from '@enbiso/auth/services';
+import { Store } from '@ngrx/store';
+import { selectAuthHeader } from '@enbiso/auth/state';
 
 /**
  * Core HTTP error handler
@@ -22,12 +24,15 @@ export const CORE_HTTP_ERROR_HANDLER = new InjectionToken<CoreHttpErrorHandler[]
 @Injectable({ providedIn: "root" })
 export class HttpService {
     errorHandlers: CoreHttpErrorHandler[]
+    authHeader$: Observable<string>
+
     constructor(
-        private authService: AuthService,
         private http: HttpClient,
+        store: Store,
         injector: Injector
     ) {
         this.errorHandlers = injector.get(CORE_HTTP_ERROR_HANDLER, [])
+        this.authHeader$ = store.select(selectAuthHeader)
     }
 
     /**
@@ -128,14 +133,13 @@ export class HttpService {
      */
     private _options(opts: HttpOptions): Observable<HttpOptions> {
         opts = opts || {}
-        return fromPromise(this.authService.authHeader())
-            .pipe(map(token => {
-                opts.headers = opts.headers || {}
-                opts.headers["Accept"] = opts.headers["Accept"] || "application/json"
-                opts.headers["Content-Type"] = opts.headers["Content-Type"] || "application/json"
-                opts.headers["Authorization"] = token
-                return opts
-            }))
+        return this.authHeader$.pipe(map(token => {
+            opts.headers = opts.headers || {}
+            opts.headers["Accept"] = opts.headers["Accept"] || "application/json"
+            opts.headers["Content-Type"] = opts.headers["Content-Type"] || "application/json"
+            opts.headers["Authorization"] = token
+            return opts
+        }))
     }
 }
 

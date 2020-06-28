@@ -25,10 +25,15 @@ export const selectAuthSignedIn = createSelector(
 
 export const selectAuthProfile = createSelector(
     selectAuthUser,
-    user => user.profile
+    user => user && user.profile
 )
 
 export const selectAuthUserId = createSelector(
     selectAuthProfile,
-    profile => profile.sub
+    profile => profile && profile.sub
+)
+
+export const selectAuthHeader = createSelector(
+    selectAuthUser,
+    user => user && `${user.token_type} ${user.access_token}`
 )

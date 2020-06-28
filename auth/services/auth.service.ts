@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UserManager, UserManagerSettings, User, Profile, SignoutResponse } from 'oidc-client';
+import { UserManager, UserManagerSettings, User, SignoutResponse } from 'oidc-client';
 import { environment } from 'environments/environment';
-import { UserProfile } from '../models';
-import { Subject, from, Observable, BehaviorSubject } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AbsoluteUri, BaseUri } from '@enbiso/core/utils';
 
@@ -29,14 +28,6 @@ export class AuthService {
      */
     getUser(): Observable<User> {
         return from(this.manager.getUser())
-    }
-
-    /**
-     * Gets authorization header
-     */
-    authHeader(): Observable<string> {
-        return from(this.manager.getUser())
-            .pipe(map(user => `${user && user.token_type} ${user && user.access_token}`))
     }
 
     /**
