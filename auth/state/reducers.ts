@@ -1,6 +1,12 @@
 import { on, createReducer } from "@ngrx/store"
 import { authActions } from './actions'
-import { AuthState } from '.'
+import { User } from 'oidc-client'
+
+export interface AuthState {
+    progress: boolean
+    user: User,
+    error: string
+}
 
 export const initialAuthState: AuthState = {
     progress: false,

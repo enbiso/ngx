@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { UserManager, UserManagerSettings, User, SignoutResponse } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AbsoluteUri, BaseUri } from '@enbiso/core/utils';
 
 /**
