@@ -11,4 +11,8 @@ export const authActions = {
     signOutComplete: createAction("[EBS Auth] signOutComplete"),
     signOutSuccess: createAction("[EBS Auth] signOutSuccess"),
     signOutFail: createAction("[EBS Auth] signOutFail", props<{ error: string }>()),
+
+    refreshComplete: createAction("[EBS Auth] refeshComplete"),
+    refreshSuccess: createAction("[EBS Auth] refreshSuccess", props<{ user: User }>()),
+    refreshFail: createAction("[EBS Auth] refreshFail", props<{ error: string }>()),
 }

@@ -23,7 +23,7 @@ export class AuthEffects {
     signOut$ = createEffect(() => this.actions$.pipe(
         ofType(authActions.signOut),
         tap(_ => this.authService.startSignOut())
-    ))
+    ), { dispatch: false })
 
     signInComplete$ = createEffect(() => this.actions$.pipe(
         ofType(authActions.signInComplete),
@@ -32,17 +32,24 @@ export class AuthEffects {
         catchError((err) => of(authActions.signInFail({ error: err.message })))
     ))
 
+    signInSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(authActions.signInSuccess),
+        tap(() => this.router.navigateByUrl("/"))
+    ), { dispatch: false })
+
+    refreshComplete$ = createEffect(() => this.actions$.pipe(
+        ofType(authActions.refreshComplete),
+        mergeMap(() => this.authService.completeRefresh()),
+        map(user => authActions.refreshSuccess({ user: user })),
+        catchError((err) => of(authActions.refreshFail({ error: err.message })))
+    ))
+
     signOutComplete$ = createEffect(() => this.actions$.pipe(
         ofType(authActions.signOutComplete),
         mergeMap(() => this.authService.completeSignOut()),
         map(() => authActions.signOutSuccess()),
         catchError((err) => of(authActions.signOutFail({ error: err.message })))
     ))
-
-    signInSuccess$ = createEffect(() => this.actions$.pipe(
-        ofType(authActions.signInSuccess),
-        tap(() => this.router.navigateByUrl("/"))
-    ), { dispatch: false })
 
     constructor(
         private router: Router,

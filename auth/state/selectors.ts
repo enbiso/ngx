@@ -22,3 +22,13 @@ export const selectAuthSignedIn = createSelector(
     selectAuthUser,
     user => user && !user.expired
 )
+
+export const selectAuthProfile = createSelector(
+    selectAuthUser,
+    user => user.profile
+)
+
+export const selectAuthUserId = createSelector(
+    selectAuthProfile,
+    profile => profile.sub
+)

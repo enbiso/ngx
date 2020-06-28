@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { UserManager, UserManagerSettings, User, Profile } from 'oidc-client';
+import { UserManager, UserManagerSettings, User, Profile, SignoutResponse } from 'oidc-client';
 import { environment } from 'environments/environment';
 import { UserProfile } from '../models';
 import { Subject, from, Observable, BehaviorSubject } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AbsoluteUri, BaseUri } from '@enbiso/core/utils';
 
 /**
@@ -22,50 +22,13 @@ export class AuthService {
         silent_redirect_uri: AbsoluteUri('refresh-callback')
     });
 
-    public onSignIn = new Subject<void>()
-    public onSignOut = new Subject<void>()
-
-    public profileChange = new BehaviorSubject<Profile | UserProfile>(null)
-
     private manager = new UserManager(this.settings);
-
-    constructor() {
-        from(this.loggedIn())
-            .pipe(map(loggedIn => loggedIn ? this.onSignIn.next() : this.onSignOut.next()))
-            .subscribe()
-        this.onSignIn
-            .pipe(mergeMap(() => from(this.manager.getUser())
-                .pipe(map(user => user && user.profile || null))
-                .pipe(map(profile => this.profileChange.next(profile)))))
-            .subscribe()
-    }
-
-    /**
-     * Check if the user is logged in
-     */
-    loggedIn(): Observable<boolean> {
-        return from(this.manager.getUser())
-            .pipe(map(user => user != null && !user.expired))
-    }
 
     /**
      * Get User
      */
     getUser(): Observable<User> {
         return from(this.manager.getUser())
-    }
-
-    /**
-     * Check if roll exists
-     */
-    inRole(role: string): Observable<boolean> {
-        return from(this.manager.getUser())
-            .pipe(map(user => {
-                const roles = user && user.profile && user.profile.role
-                return Array.isArray(roles)
-                    ? roles.indexOf(role) >= 0
-                    : roles == role
-            }))
     }
 
     /**
@@ -87,10 +50,7 @@ export class AuthService {
      * Complete authentication
      */
     completeSignIn(): Observable<User> {
-        return from(this.manager.signinRedirectCallback()).pipe(map(_ => {
-            this.onSignIn.next()
-            return _;
-        }))
+        return from(this.manager.signinRedirectCallback())
     }
 
 
@@ -98,10 +58,7 @@ export class AuthService {
      * Complete Refresh
      */
     completeRefresh(): Observable<User> {
-        return from(this.manager.signinSilentCallback()).pipe(map(_ => {
-            this.onSignIn.next()
-            return _;
-        }))
+        return from(this.manager.signinSilentCallback())
     }
 
 
@@ -115,9 +72,7 @@ export class AuthService {
     /**
      * Complete logout
      */
-    completeSignOut(): Observable<void> {
-        return from(this.manager.signoutRedirectCallback().then(() => {
-            this.onSignOut.next()
-        }))
+    completeSignOut(): Observable<SignoutResponse> {
+        return from(this.manager.signoutRedirectCallback())
     }
 }

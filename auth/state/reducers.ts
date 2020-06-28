@@ -64,6 +64,27 @@ const _authReducer = createReducer(initialAuthState,
             error: action.error
         })
     }),
+    on(authActions.refreshComplete, (state) => {
+        return ({
+            ...state,
+            progress: true,
+        })
+    }),
+    on(authActions.refreshSuccess, (state, action) => {
+        return ({
+            ...state,
+            progress: false,
+            user: action.user,
+            error: null
+        })
+    }),
+    on(authActions.refreshFail, (state, action) => {
+        return ({
+            ...state,
+            progress: false,
+            error: action.error
+        })
+    }),
 )
 
 export const authReducer = function (state, action) {
