@@ -1,0 +1,9 @@
+.selectable {
+    :hover {
+        cursor: pointer;
+       background-color: darken(white, 3%);
+    }
+    .active {
+        background-color: darken(white, 5%);
+    }
+}
