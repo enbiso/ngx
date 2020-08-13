@@ -13,7 +13,6 @@ export class AuthService {
     private settings: UserManagerSettings = Object.assign(environment.oidc, <UserManagerSettings>{
         redirect_uri: AbsoluteUri('auth-callback'),
         post_logout_redirect_uri: BaseUri(),
-        response_type: 'id_token token',
         filterProtocolClaims: true,
         loadUserInfo: true,
         automaticSilentRenew: true,
