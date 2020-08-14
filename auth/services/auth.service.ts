@@ -34,9 +34,9 @@ export class AuthService {
      */
     inRole(role: string): Observable<boolean> {
         return this.getUser().pipe(
-            //map(u => u.profile),
-            tap(u => console.log(u)),
-            map(_ => true)
+            map(u => u?.profile?.role || []),
+            map(roles => roles instanceof Array ? roles : [roles]),
+            map(roles => roles.indexOf(role) >= 0)
         )
     }
 
