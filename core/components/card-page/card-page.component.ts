@@ -38,5 +38,5 @@ import { Component, Input } from '@angular/core';
 export class CardPageComponent {
     @Input() title?: string
     @Input() subTitle?: string
-    @Input() backLink?: string
+    @Input() backLink?: []
 }

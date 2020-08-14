@@ -15,10 +15,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { QuillModule } from 'ngx-quill';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         HttpClientModule,
         MatDialogModule,
         MatProgressSpinnerModule,
