@@ -31,6 +31,7 @@ export class SwaggerService {
                     return model
                 } else if (doc["components"]) {
                     const schemas = doc["components"]["schemas"]
+                    name = Object.keys(schemas).find(k => k.toLowerCase() === name.toLowerCase())
                     let model = <ResourceModel>schemas[name]
                     for (const key in model.properties) {
                         if (model.properties.hasOwnProperty(key) && model.properties[key].hasOwnProperty("$ref")) {

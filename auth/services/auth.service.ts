@@ -3,6 +3,7 @@ import { UserManager, UserManagerSettings, User, SignoutResponse } from 'oidc-cl
 import { environment } from 'environments/environment';
 import { from, Observable } from 'rxjs';
 import { AbsoluteUri, BaseUri } from '@enbiso/core/utils';
+import { map, tap } from 'rxjs/operators';
 
 /**
  * Auth service
@@ -26,6 +27,17 @@ export class AuthService {
      */
     getUser(): Observable<User> {
         return from(this.manager.getUser())
+    }
+
+    /**
+     * In Role
+     */
+    inRole(role: string): Observable<boolean> {
+        return this.getUser().pipe(
+            map(u => u?.profile?.role || []),
+            map(roles => roles instanceof Array ? roles : [roles]),
+            map(roles => roles.indexOf(role) >= 0)
+        )
     }
 
     /**

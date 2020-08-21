@@ -3,6 +3,7 @@
 Common Angular Components
 
 - Core
+- Auth
 - Cache
 - Breadcrumb
 - CRUD

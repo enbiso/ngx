@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DiscussPostResponse, DiscussService, DiscussPostCreate } from '../services/discuss.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { of, Observable } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 

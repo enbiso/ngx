@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as cmp from './components';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { KeysPipe } from './pipes/keys.pipe';
 import { StartCasePipe } from './pipes/startcase.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,10 +15,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { QuillModule } from 'ngx-quill';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         HttpClientModule,
         MatDialogModule,
         MatProgressSpinnerModule,

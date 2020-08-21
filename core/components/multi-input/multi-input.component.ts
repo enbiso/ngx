@@ -115,7 +115,11 @@ export class MultiInputComponent implements MatFormFieldControl<string[]>, Contr
 
 
     writeValue(obj: any): void {
+<<<<<<< HEAD
         if (obj !== undefined) this.value = Object.values(obj)
+=======
+        obj && (this.value = Object.values(obj))
+>>>>>>> 90c4d730a37db07b2b9342648fa4ef1c29be5b84
     }
 
     propagateChange = (_: any) => { };
