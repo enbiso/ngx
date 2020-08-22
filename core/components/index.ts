@@ -1,4 +1,6 @@
+export * from './page/page.component'
 export * from './card-page/card-page.component'
+export * from './sidebar-page/sidebar-page.component'
 export * from './multi-input/multi-input.component'
 export * from './object-input/object-input.component'
 export * from './spinner/spinner.component'

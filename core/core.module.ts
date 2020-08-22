@@ -16,28 +16,36 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { QuillModule } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
+import { FuseSidebarModule } from '@fuse/components';
 
 @NgModule({
     imports: [
+        //NG
         CommonModule,
         RouterModule,
         HttpClientModule,
+        FlexLayoutModule,
+        FormsModule,
+        //MAT
         MatDialogModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
         MatChipsModule,
         MatFormFieldModule,
         MatButtonModule,
-        FlexLayoutModule,
-        FormsModule,
         MatIconModule,
+        //FUSE
+        FuseSidebarModule,
+        //LIB
         AutosizeModule,
         QuillModule.forRoot()
     ],
     exports: [
         KeysPipe,
         StartCasePipe,
+        cmp.PageComponent,
         cmp.CardPageComponent,
+        cmp.SidebarPageComponent,
         cmp.MultiInputComponent,
         cmp.ObjectInputComponent,
         cmp.SpinnerComponent,
@@ -45,7 +53,9 @@ import { RouterModule } from '@angular/router';
         cmp.RichViewerComponent
     ],
     declarations: [
+        cmp.PageComponent,
         cmp.CardPageComponent,
+        cmp.SidebarPageComponent,
         cmp.MultiInputComponent,
         cmp.ObjectInputComponent,
         cmp.SpinnerComponent,
