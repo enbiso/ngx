@@ -1,9 +1,8 @@
+import { corePipes } from './pipes/index';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as cmp from './components';
 import { HttpClientModule } from '@angular/common/http';
-import { KeysPipe } from './pipes/keys.pipe';
-import { StartCasePipe } from './pipes/startcase.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
@@ -41,8 +40,7 @@ import { FuseSidebarModule } from '@fuse/components';
         QuillModule.forRoot()
     ],
     exports: [
-        KeysPipe,
-        StartCasePipe,
+        [...corePipes],
         cmp.PageComponent,
         cmp.CardPageComponent,
         cmp.SidebarPageComponent,
@@ -50,9 +48,10 @@ import { FuseSidebarModule } from '@fuse/components';
         cmp.ObjectInputComponent,
         cmp.SpinnerComponent,
         cmp.RichEditorComponent,
-        cmp.RichViewerComponent
+        cmp.RichViewerComponent,
     ],
     declarations: [
+        [...corePipes],
         cmp.PageComponent,
         cmp.CardPageComponent,
         cmp.SidebarPageComponent,
@@ -62,8 +61,6 @@ import { FuseSidebarModule } from '@fuse/components';
         cmp.RichEditorComponent,
         cmp.RichViewerComponent,
         cmp.ConfirmDialogComponent,
-        KeysPipe,
-        StartCasePipe
     ],
     entryComponents: [cmp.ConfirmDialogComponent],
 })
