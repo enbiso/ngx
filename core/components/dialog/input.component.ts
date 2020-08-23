@@ -18,7 +18,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     <button mat-button (click)="onDismiss()">Cancel</button>
     <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="onSubmit()">Submit</button>
 </div>
-    `
+    `,
+    styles: [`
+mat-form-field {
+    height: 100px;
+}
+        `]
 })
 
 export class InputDialogComponent {
