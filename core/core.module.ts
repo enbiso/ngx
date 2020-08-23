@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import * as cmp from './components';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { QuillModule } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
 import { FuseSidebarModule } from '@fuse/components';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { FuseSidebarModule } from '@fuse/components';
         HttpClientModule,
         FlexLayoutModule,
         FormsModule,
+        ReactiveFormsModule,
         //MAT
         MatDialogModule,
         MatProgressSpinnerModule,
@@ -32,6 +34,7 @@ import { FuseSidebarModule } from '@fuse/components';
         MatChipsModule,
         MatFormFieldModule,
         MatButtonModule,
+        MatInputModule,
         MatIconModule,
         //FUSE
         FuseSidebarModule,
@@ -61,6 +64,7 @@ import { FuseSidebarModule } from '@fuse/components';
         cmp.RichEditorComponent,
         cmp.RichViewerComponent,
         cmp.ConfirmDialogComponent,
+        cmp.InputDialogComponent
     ],
     entryComponents: [cmp.ConfirmDialogComponent],
 })
