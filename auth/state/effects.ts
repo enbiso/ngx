@@ -9,12 +9,16 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthEffects {
 
+    private static REDIRECT_URL = 'ebs.auth.redirectUrl'
+
     signIn$ = createEffect(() => this.actions$.pipe(
         ofType(authActions.signIn),
         mergeMap(() => this.authService.getUser()),
         tap(user => {
-            if (!user || user.expired)
+            if (!user || user.expired) {
+                sessionStorage.setItem(AuthEffects.REDIRECT_URL, location.pathname + location.search)
                 return this.authService.startSignIn()
+            }
         }),
         filter(user => user && !user.expired),
         map(user => authActions.signInSuccess({ user: user }))
@@ -34,7 +38,11 @@ export class AuthEffects {
 
     signInSuccess$ = createEffect(() => this.actions$.pipe(
         ofType(authActions.signInSuccess),
-        tap(() => this.router.navigateByUrl("/"))
+        tap(() => {
+            const currentUrl = sessionStorage.getItem(AuthEffects.REDIRECT_URL)
+            sessionStorage.removeItem(AuthEffects.REDIRECT_URL)
+            if (currentUrl) this.router.navigateByUrl(currentUrl);
+        })
     ), { dispatch: false })
 
     refreshComplete$ = createEffect(() => this.actions$.pipe(

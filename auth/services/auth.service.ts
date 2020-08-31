@@ -3,7 +3,7 @@ import { UserManager, UserManagerSettings, User, SignoutResponse } from 'oidc-cl
 import { environment } from 'environments/environment';
 import { from, Observable } from 'rxjs';
 import { AbsoluteUri, BaseUri } from '@enbiso/core/utils';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 /**
  * Auth service
