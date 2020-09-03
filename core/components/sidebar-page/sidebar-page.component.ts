@@ -24,7 +24,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
                 (click)="toggleSidebar('sidebar-page')">
             <mat-icon>menu</mat-icon>
         </button>
-        <span>{{contentTitle}}</span>
+        <ng-content select="[contentHeader]"></ng-content>
     </div>
     <ng-content content select="[content]"></ng-content>
     <ng-content header select="[header]"></ng-content>
@@ -36,7 +36,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 export class SidebarPageComponent {
     @Input() title?: string
     @Input() subTitle?: string
-    @Input() contentTitle?: string
     @Input() backLink?: []
 
     constructor(private _fuseSidebarService: FuseSidebarService) {

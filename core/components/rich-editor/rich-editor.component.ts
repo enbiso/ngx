@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core'
 @Component({
     selector: 'ebs-core-rich-editor',
     template: `         
-<quill-editor [ngModel]="content" (ngModelChange)="onContentChanged($event)">
+<quill-editor [ngModel]="content" (onContentChanged)="onContentChanged($event)">
     <div quill-editor-toolbar>                  
         <span class="ql-formats">
             <select class="ql-font">
@@ -49,10 +49,16 @@ import { Component, Input, Output, EventEmitter } from '@angular/core'
 })
 
 export class RichEditorComponent {
-    @Input() content: string;
-    @Output() contentChange: EventEmitter<string> = new EventEmitter<string>();
+    @Input() content: string
+    @Input() delay: number = 5000
+    @Output() contentChange: EventEmitter<string> = new EventEmitter<string>()
+    @Output() contentChangeDelayed: EventEmitter<string> = new EventEmitter<string>()
 
-    onContentChanged(content) {
-        this.contentChange.next(content)
+    timeout: NodeJS.Timeout
+
+    onContentChanged({ html }) {
+        this.contentChange.next(html)
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => this.contentChangeDelayed.next(html), this.delay)
     }
 }
