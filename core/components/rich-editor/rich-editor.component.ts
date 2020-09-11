@@ -50,7 +50,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core'
 
 export class RichEditorComponent {
     @Input() content: string
-    @Input() delay: number = 5000
+    @Input() delay: number = 2000
     @Output() contentChange: EventEmitter<string> = new EventEmitter<string>()
     @Output() contentChangeDelayed: EventEmitter<string> = new EventEmitter<string>()
 
