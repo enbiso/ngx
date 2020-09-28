@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ListComponent } from './components/list/list.component';
 import { FormComponent } from './components/form/form.component';
 import { DetailsComponent } from './components/details/details.component';
 import { CommonModule } from '@angular/common';
@@ -50,14 +49,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         MatChipsModule
     ],
     exports: [
-        ListComponent,
         FormComponent,
         DetailsComponent,
         HeaderComponent,
         PopulateKeyPipe
     ],
     declarations: [
-        ListComponent,
         FormComponent,
         DetailsComponent,
         HeaderComponent,
