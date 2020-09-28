@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, from as fromPromise, throwError } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { map, mergeMap, catchError, filter } from 'rxjs/operators';
 import { Injectable, Injector, InjectionToken } from '@angular/core';
 import { AuthService } from '@enbiso/auth/services';
 import { Store } from '@ngrx/store';
@@ -133,13 +133,15 @@ export class HttpService {
      */
     private _options(opts: HttpOptions): Observable<HttpOptions> {
         opts = opts || {}
-        return this.authHeader$.pipe(map(token => {
-            opts.headers = opts.headers || {}
-            opts.headers["Accept"] = opts.headers["Accept"] || "application/json"
-            opts.headers["Content-Type"] = opts.headers["Content-Type"] || "application/json"
-            opts.headers["Authorization"] = token
-            return opts
-        }))
+        return this.authHeader$.pipe(
+            filter(token => token != null),
+            map(token => {
+                opts.headers = opts.headers || {}
+                opts.headers["Accept"] = opts.headers["Accept"] || "application/json"
+                opts.headers["Content-Type"] = opts.headers["Content-Type"] || "application/json"
+                if (token) opts.headers["Authorization"] = token
+                return opts
+            }))
     }
 }
 

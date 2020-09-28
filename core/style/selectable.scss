@@ -1,9 +1,9 @@
 .selectable {
-    :hover {
+    tr:hover, mat-row:hover {
         cursor: pointer;
        background-color: darken(white, 3%);
     }
-    .active {
+    tr.active, mat-row.active {
         background-color: darken(white, 5%);
     }
 }
